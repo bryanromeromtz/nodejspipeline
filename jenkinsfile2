@@ -6,7 +6,7 @@ node {
      gitcommit = readFile('.git/commit-id').trim()
    }
    stage('test') {
-     def contenedortest = docker.image('node:18.15.0')
+     def contenedortest = docker.image('node:14.15.0')
      contenedortest.pull()
      contenedortest.inside {
        sh 'npm install --only=dev'
