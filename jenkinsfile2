@@ -12,7 +12,12 @@ node {
        sh 'npm install --only=dev'
        sh 'npm test'
      }
-   }                   
+   }
+   stage('Cambiar permisos .npm') {
+     steps {
+       sh 'sudo chown -R 117:126 "/.npm"'
+     }
+   }                       
    stage('Docker Build & Push') {
      docker.withRegistry('https://registry.hub.docker.com', 'docker-hub') {
       def nuestraapp = docker.build("modeselektor333/nodejsapp:${gitcommit}", ".")
