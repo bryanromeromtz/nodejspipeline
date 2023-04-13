@@ -12,21 +12,11 @@ node {
        sh 'npm install --only=dev'
        sh 'npm test'
      }
-   }
-   stage('Credenciales de Docker Hub') {
-     withCredentials([usernamePassword(credentialsId: 'docker-hub', passwordVariable: 'DOCKER_HUB_PASSWORD', usernameVariable: 'DOCKER_HUB_USERNAME')]) {
-      sh 'docker login -u $DOCKER_HUB_USERNAME -p $DOCKER_HUB_PASSWORD'
-      }
-   }                  
-  //  stage('Docker Build & Push') {
-  //    docker.withRegistry('https://registry.hub.docker.com', 'docker-hub') {
-  //     def nuestraapp = docker.build("modeselektor333/nodejsapp:${gitcommit}", ".")
-  //     nuestraapp.push()
-  //    }
-  //  }
-    stage('Docker Build & Push') {
+   }                   
+   stage('Docker Build & Push') {
+     docker.withRegistry('https://registry.hub.docker.com', 'docker-hub') {
       def nuestraapp = docker.build("modeselektor333/nodejsapp:${gitcommit}", ".")
-      sh "docker tag ${nuestraapp.id} modeselektor333/nodejsapp:${gitcommit}"
-      sh "docker push modeselektor333/nodejsapp:${gitcommit}"
-    }
+      nuestraapp.push()
+     }
+   }
 }
