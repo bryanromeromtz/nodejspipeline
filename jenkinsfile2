@@ -6,11 +6,11 @@ node {
      gitcommit = readFile('.git/commit-id').trim()
    }
    stage('test') {
-     def contenedortest = docker.image('node:4.6')
+     def contenedortest = docker.image('node:15')
      contenedortest.pull()
      contenedortest.inside {
-       sh 'sudo npm install --only=dev'
-       sh 'sudo npm test'
+       sh 'npm install --only=dev'
+       sh 'npm test'
      }
    }                     
    stage('Docker Build & Push') {
